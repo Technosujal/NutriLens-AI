@@ -12,8 +12,8 @@ from app.config import settings
 logger = logging.getLogger("uvicorn.error")
 
 # --- Globals ---
-# gemini-3.5-flash-lite is fast, current, and quota-efficient
-MODEL_NAME = "gemini-3.5-flash-lite"
+# gemini-1.5-flash is fast, reliable, and universally supported
+MODEL_NAME = "gemini-1.5-flash"
 _is_configured = False
 
 def _configure_client():

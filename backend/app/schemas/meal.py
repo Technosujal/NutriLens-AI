@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
-from typing import Optional, List
+from datetime import date as date_type
+from typing import Optional, List, Union
 
 class MealItemBase(BaseModel):
     food_name: str
@@ -24,13 +25,13 @@ class MealItemResponse(MealItemBase):
 class MealCreate(BaseModel):
     meal_type: Optional[str] = Field(None, description="Breakfast, Lunch, Dinner, or Snacks")
     name: str = Field(..., description="Name of the meal log (e.g., Toast and Coffee)")
-    date: str = Field(..., description="Log date in YYYY-MM-DD format")
+    date: Union[date_type, str] = Field(..., description="Log date in YYYY-MM-DD format")
     items: List[MealItemCreate] = []
 
 class MealUpdate(BaseModel):
     meal_type: Optional[str] = None
     name: Optional[str] = None
-    date: Optional[str] = None
+    date: Optional[Union[date_type, str]] = None
     items: Optional[List[MealItemCreate]] = None
 
 class MealResponse(BaseModel):
@@ -38,7 +39,7 @@ class MealResponse(BaseModel):
     user_id: int
     meal_type: str
     name: str
-    date: str
+    date: Union[date_type, str]
     total_calories: float
     total_protein: float
     total_carbs: float
@@ -51,10 +52,11 @@ class MealResponse(BaseModel):
 
 class TextMealLoggingRequest(BaseModel):
     text: str
-    date: str  # YYYY-MM-DD
+    date: Union[date_type, str]  # YYYY-MM-DD
     meal_type: Optional[str] = None # Breakfast, Lunch, Dinner, Snacks
 
 class VoiceMealLoggingRequest(BaseModel):
     text: str
-    date: str
+    date: Union[date_type, str]
     meal_type: Optional[str] = None
+

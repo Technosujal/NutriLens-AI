@@ -121,7 +121,7 @@ def get_history(
         day_info = history_by_date[dt]
         day_meals = day_info["meals"]
         sorted_history.append({
-            "date": dt,
+            "date": str(dt),
             "meals": day_meals,
             "water_ml": day_info["water_ml"],
             "weight_kg": day_info["weight_kg"],
