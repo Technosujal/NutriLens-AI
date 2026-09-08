@@ -9,6 +9,8 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     name = Column(String, nullable=True)
+    avatar_url = Column(String, nullable=True)
+    auth_provider = Column(String, default="email")  # email, google, github, demo
     
     # Profile & Health Goals
     age = Column(Integer, nullable=True)

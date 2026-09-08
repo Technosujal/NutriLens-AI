@@ -184,12 +184,26 @@ def get_dashboard(date: Optional[str] = None, db: Session = Depends(get_db), cur
                 "id": m.id,
                 "meal_type": m.meal_type,
                 "name": m.name,
+                "date": str(m.date),
                 "total_calories": m.total_calories,
                 "total_protein": m.total_protein,
                 "total_carbs": m.total_carbs,
                 "total_fat": m.total_fat,
                 "total_fiber": m.total_fiber,
-                "time": m.created_at.strftime("%H:%M")
+                "time": m.created_at.strftime("%H:%M") if m.created_at else "",
+                "items": [
+                    {
+                        "id": item.id,
+                        "food_name": item.food_name,
+                        "quantity": item.quantity,
+                        "serving_size": item.serving_size,
+                        "calories": item.calories,
+                        "protein": item.protein,
+                        "carbs": item.carbs,
+                        "fat": item.fat,
+                        "fiber": item.fiber
+                    } for item in m.items
+                ]
             } for m in meals_today
         ],
         "latest_recommendation": recommendation_data

@@ -97,10 +97,10 @@ async def log_meal_via_text(
     # Extract list of food items using Gemini
     items_extracted = await GeminiService.extract_foods_from_text(payload.text)
     
-    if not items_extracted:
+    if not items_extracted or len(items_extracted) == 0:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Could not extract any food items from the description."
+            detail="No food items detected in your input. Please describe the food you ate (e.g. '2 boiled eggs and 1 banana')."
         )
         
     meal_items_to_save = []
@@ -135,10 +135,12 @@ async def log_meal_via_text(
         total_f += nutr["fat"]
         total_fib += nutr["fiber"]
         
+    chosen_meal_type = payload.meal_type if payload.meal_type else get_meal_type_by_time()
+
     # Save the Meal
     new_meal = Meal(
         user_id=current_user.id,
-        meal_type=get_meal_type_by_time(),
+        meal_type=chosen_meal_type,
         name=payload.text[:100],  # Use user description as base name
         date=payload.date,
         total_calories=round(total_cal, 1),
@@ -176,7 +178,8 @@ async def log_meal_via_voice(
     # Same process as text route
     text_request = TextMealLoggingRequest(
         text=payload.text,
-        date=payload.date
+        date=payload.date,
+        meal_type=payload.meal_type
     )
     return await log_meal_via_text(text_request, db, current_user)
 
@@ -241,7 +244,7 @@ async def log_meal_via_image(
     meal_name = "Image Log: " + ", ".join([mi.food_name for mi in meal_items_to_save[:3]])
     new_meal = Meal(
         user_id=current_user.id,
-        meal_type=get_meal_type_by_time(),
+        meal_type=meal_type or get_meal_type_by_time(),
         name=meal_name[:100],
         date=date,
         total_calories=round(total_cal, 1),

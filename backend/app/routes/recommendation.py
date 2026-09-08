@@ -25,12 +25,13 @@ async def get_recommendations(
     current_user: User = Depends(get_current_user)
 ):
     today_str = datetime.date.today().strftime("%Y-%m-%d")
+    cache_key_date = f"{today_str}_{diet_preference.lower()}"
     
-    # 1. If not forcing a refresh, check database cache
+    # 1. If not forcing a refresh, check database cache for this specific diet preference
     if not refresh:
         existing_rec = db.query(Recommendation).filter(
             Recommendation.user_id == current_user.id,
-            Recommendation.date == today_str
+            Recommendation.date == cache_key_date
         ).first()
         
         if existing_rec:
@@ -91,13 +92,49 @@ async def get_recommendations(
         diet_preference=diet_preference,
         previous_meals_today=previous_meals
     )
+
+    # Post-validation: If vegetarian is requested, ensure no non-veg items slipped through
+    if diet_preference.lower() == 'vegetarian' and isinstance(recommendations_json, dict):
+        non_veg_keywords = ["chicken", "mutton", "beef", "pork", "fish", "salmon", "tuna", "prawn", "shrimp", "turkey", "bacon", "egg", "meat"]
+        veg_fallbacks = {
+            "breakfast": {
+                "meal_name": "Tofu & Spinach Scramble with Toast",
+                "description": "Crumbled firm tofu scrambled with fresh spinach, turmeric, and whole wheat toast.",
+                "calories": 320, "protein": 22, "carbs": 24, "fat": 12, "is_suggestion": True,
+                "explanation": "100% plant-based high-protein vegetarian breakfast."
+            },
+            "lunch": {
+                "meal_name": "Quinoa & Chickpea Power Bowl",
+                "description": "Vibrant bowl of fluffy quinoa, spiced chickpeas, cucumber, cherry tomatoes, and tahini.",
+                "calories": 420, "protein": 18, "carbs": 58, "fat": 14, "is_suggestion": True,
+                "explanation": "Balanced vegetarian power bowl rich in complex carbs and fiber."
+            },
+            "dinner": {
+                "meal_name": "Grilled Paneer & Roasted Vegetables",
+                "description": "Spiced cottage cheese cubes grilled with bell peppers, zucchini, and mint chutney.",
+                "calories": 440, "protein": 26, "carbs": 22, "fat": 20, "is_suggestion": True,
+                "explanation": "High-protein vegetarian dinner to aid muscle recovery."
+            },
+            "snacks": {
+                "meal_name": "Greek Yogurt & Almond Bowl",
+                "description": "Low-fat unsweetened Greek yogurt topped with sliced almonds and blueberries.",
+                "calories": 220, "protein": 16, "carbs": 14, "fat": 8, "is_suggestion": True,
+                "explanation": "Probiotic-rich vegetarian snack to curb hunger between meals."
+            }
+        }
+        for meal_key in ["breakfast", "lunch", "dinner", "snacks"]:
+            if meal_key in recommendations_json and isinstance(recommendations_json[meal_key], dict):
+                m_name = (recommendations_json[meal_key].get("meal_name") or "").lower()
+                m_desc = (recommendations_json[meal_key].get("description") or "").lower()
+                if any(kw in m_name or kw in m_desc for kw in non_veg_keywords):
+                    recommendations_json[meal_key] = veg_fallbacks[meal_key]
     
     # 4. Save/update cache in database
     try:
         # Check if recommendation exists for today to update it, or add new
         rec_record = db.query(Recommendation).filter(
             Recommendation.user_id == current_user.id,
-            Recommendation.date == today_str
+            Recommendation.date == cache_key_date
         ).first()
         
         serialized_text = json.dumps(recommendations_json)
@@ -107,7 +144,7 @@ async def get_recommendations(
         else:
             rec_record = Recommendation(
                 user_id=current_user.id,
-                date=today_str,
+                date=cache_key_date,
                 recommendation_text=serialized_text
             )
             db.add(rec_record)

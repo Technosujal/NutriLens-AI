@@ -11,10 +11,33 @@ from app.utils.auth_utils import get_current_user
 from app.schemas.meal import MealResponse
 
 # Import Route files
-from app.routes import auth, profile, meal, water, dashboard, recommendation
+from app.routes import auth, profile, meal, water, dashboard, recommendation, rag_features
 
 # Create Database tables
 Base.metadata.create_all(bind=engine)
+
+# Ensure new columns exist on database safely
+def _ensure_db_columns():
+    try:
+        from sqlalchemy import text
+        with engine.connect() as conn:
+            # Check database dialect
+            dialect_name = engine.dialect.name
+            if dialect_name == "postgresql":
+                conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar_url VARCHAR;"))
+                conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS auth_provider VARCHAR DEFAULT 'email';"))
+                conn.commit()
+            elif dialect_name == "sqlite":
+                columns = [row[1] for row in conn.execute(text("PRAGMA table_info(users)")).fetchall()]
+                if "avatar_url" not in columns:
+                    conn.execute(text("ALTER TABLE users ADD COLUMN avatar_url VARCHAR"))
+                if "auth_provider" not in columns:
+                    conn.execute(text("ALTER TABLE users ADD COLUMN auth_provider VARCHAR DEFAULT 'email'"))
+                conn.commit()
+    except Exception as e:
+        print("Schema sync check info:", e)
+
+_ensure_db_columns()
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
@@ -39,6 +62,7 @@ app.include_router(meal.router, prefix="/meal", tags=["Meals"])
 app.include_router(water.router, prefix="/water", tags=["Water Tracker"])
 app.include_router(dashboard.router, prefix="/dashboard", tags=["Dashboard"])
 app.include_router(recommendation.router, prefix="/recommendations", tags=["AI Recommendations"])
+app.include_router(rag_features.router, prefix="/rag", tags=["RAG Smart Features"])
 
 # Alias route for GET /meals (matches the prompt requirements)
 @app.get("/meals", response_model=List[MealResponse], tags=["Meals"])

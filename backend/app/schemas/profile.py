@@ -10,9 +10,13 @@ class ProfileUpdate(BaseModel):
     target_weight_kg: Optional[float] = Field(None, ge=20.0, le=300.0)
     activity_level: Optional[str] = Field(None, pattern="^(Sedentary|Lightly Active|Moderately Active|Very Active)$")
     weight_goal: Optional[str] = Field(None, pattern="^(Lose Weight|Maintain Weight|Gain Muscle)$")
+    diet_preference: Optional[str] = None
 
 class ProfileResponse(BaseModel):
     name: Optional[str] = None
+    email: Optional[str] = None
+    avatar_url: Optional[str] = None
+    auth_provider: Optional[str] = "email"
     age: Optional[int] = None
     gender: Optional[str] = None
     height_cm: Optional[float] = None
@@ -20,6 +24,7 @@ class ProfileResponse(BaseModel):
     target_weight_kg: Optional[float] = None
     activity_level: Optional[str] = None
     weight_goal: Optional[str] = None
+    diet_preference: Optional[str] = None
     
     # Calculated health targets
     bmi: Optional[float] = None

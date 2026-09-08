@@ -67,6 +67,9 @@ def get_profile(current_user: User = Depends(get_current_user)):
     
     response_data = {
         "name": current_user.name,
+        "email": current_user.email,
+        "avatar_url": getattr(current_user, "avatar_url", None),
+        "auth_provider": getattr(current_user, "auth_provider", "email") or "email",
         "age": current_user.age,
         "gender": current_user.gender,
         "height_cm": current_user.height_cm,
@@ -74,6 +77,7 @@ def get_profile(current_user: User = Depends(get_current_user)):
         "target_weight_kg": current_user.target_weight_kg,
         "activity_level": current_user.activity_level,
         "weight_goal": current_user.weight_goal,
+        "diet_preference": current_user.diet_preference,
     }
     
     if goals:
@@ -131,6 +135,9 @@ def update_profile(payload: ProfileUpdate, db: Session = Depends(get_db), curren
         
     response_data = {
         "name": current_user.name,
+        "email": current_user.email,
+        "avatar_url": getattr(current_user, "avatar_url", None),
+        "auth_provider": getattr(current_user, "auth_provider", "email") or "email",
         "age": current_user.age,
         "gender": current_user.gender,
         "height_cm": current_user.height_cm,
@@ -138,6 +145,7 @@ def update_profile(payload: ProfileUpdate, db: Session = Depends(get_db), curren
         "target_weight_kg": current_user.target_weight_kg,
         "activity_level": current_user.activity_level,
         "weight_goal": current_user.weight_goal,
+        "diet_preference": current_user.diet_preference,
     }
     
     if goals:

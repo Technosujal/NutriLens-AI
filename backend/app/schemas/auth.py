@@ -11,9 +11,27 @@ class LoginRequest(BaseModel):
     email: EmailStr
     password: str
 
+class GoogleAuthRequest(BaseModel):
+    credential: Optional[str] = None
+    token: Optional[str] = None
+    email: Optional[EmailStr] = None
+    name: Optional[str] = None
+    picture: Optional[str] = None
+
+class GithubAuthRequest(BaseModel):
+    code: Optional[str] = None
+    token: Optional[str] = None
+    email: Optional[EmailStr] = None
+    name: Optional[str] = None
+    avatar_url: Optional[str] = None
+
+class DemoAuthRequest(BaseModel):
+    demo_type: Optional[str] = "standard"  # standard, athlete, weight_loss
+
 class Token(BaseModel):
     access_token: str
     token_type: str
+    user: Optional[dict] = None
 
 class TokenData(BaseModel):
     email: Optional[str] = None
@@ -23,6 +41,8 @@ class UserResponse(BaseModel):
     id: int
     email: EmailStr
     name: Optional[str] = None
+    avatar_url: Optional[str] = None
+    auth_provider: Optional[str] = "email"
     created_at: datetime
 
     class Config:

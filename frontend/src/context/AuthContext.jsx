@@ -74,6 +74,26 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Google Login / Signup handler
+  const googleLogin = async (googlePayload) => {
+    try {
+      setLoading(true);
+      const response = await api.post('/google-auth', googlePayload);
+      const { access_token, user: loggedUser } = response.data;
+      localStorage.setItem('token', access_token);
+      setToken(access_token);
+      if (loggedUser) {
+        setUser(loggedUser);
+      }
+      return { success: true, user: loggedUser };
+    } catch (error) {
+      setLoading(false);
+      const errorMessage = error.response?.data?.detail || 'Google sign-in failed. Please try again.';
+      console.error("Google Auth error:", errorMessage);
+      return { success: false, error: errorMessage };
+    }
+  };
+
   // Logout handler
   const logout = () => {
     localStorage.removeItem('token');
@@ -94,6 +114,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         login,
         signup,
+        googleLogin,
         logout,
         updateProfileState,
         refreshProfile: fetchUserProfile,

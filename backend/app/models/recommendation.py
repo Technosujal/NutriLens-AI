@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, func
+from sqlalchemy import Column, Integer, Text, DateTime, ForeignKey, func, Date
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -7,7 +7,7 @@ class Recommendation(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
-    date = Column(String, index=True, nullable=False)  # YYYY-MM-DD
+    date = Column(Date, index=True, nullable=False)
     recommendation_text = Column(Text, nullable=False)  # JSON string
     created_at = Column(DateTime, default=func.now())
 

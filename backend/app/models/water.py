@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, func
+from sqlalchemy import Column, Integer, DateTime, ForeignKey, func, Date
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -7,7 +7,7 @@ class WaterLog(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
-    date = Column(String, index=True, nullable=False)  # YYYY-MM-DD
+    date = Column(Date, index=True, nullable=False)
     amount_ml = Column(Integer, default=0)
     created_at = Column(DateTime, default=func.now())
 

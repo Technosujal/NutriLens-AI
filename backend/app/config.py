@@ -16,12 +16,12 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
     USDA_API_KEY: str = os.getenv("USDA_API_KEY", "")
     
-    # CORS Origins
-    CORS_ORIGINS: list[str] = [
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://localhost:3000",
-    ]
+    # CORS Origins (comma-separated string or list)
+    cors_origins_raw = os.getenv("CORS_ORIGINS", "*")
+    if cors_origins_raw == "*":
+        CORS_ORIGINS: list[str] = ["*"]
+    else:
+        CORS_ORIGINS: list[str] = [origin.strip() for origin in cors_origins_raw.split(",") if origin.strip()]
 
     class Config:
         case_sensitive = True

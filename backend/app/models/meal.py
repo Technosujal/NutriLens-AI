@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, func
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, func, Date
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -9,7 +9,7 @@ class Meal(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     meal_type = Column(String, nullable=False)  # Breakfast, Lunch, Dinner, Snacks
     name = Column(String, nullable=False)        # E.g., "Scrambled eggs and toast"
-    date = Column(String, index=True, nullable=False)  # YYYY-MM-DD
+    date = Column(Date, index=True, nullable=False)
     
     # Nutrition totals for the meal
     total_calories = Column(Float, default=0.0)

@@ -1,0 +1,51 @@
+[
+  {
+    "id": "kb_protein_importance",
+    "title": "Optimizing Protein Intake",
+    "category": "Macros",
+    "content": "Protein is the building block of muscle tissue and plays a crucial role in satiety and metabolic rate. A general recommendation for active individuals is to consume between 1.6 to 2.2 grams of protein per kilogram of body weight. Excellent sources of lean protein include chicken breast, turkey, fish, eggs, Greek yogurt, cottage cheese, tofu, tempeh, and lentils. For individuals seeking to lose fat, higher protein intake helps preserve lean muscle mass during a calorie deficit, ensuring that weight lost comes primarily from fat stores.",
+    "tags": ["protein", "muscle", "satiety", "macros"]
+  },
+  {
+    "id": "kb_hydration_tips",
+    "title": "Hydration and Weight Loss",
+    "category": "Hydration",
+    "content": "Water is critical for all cellular processes, including lipolysis (fat burning). Mild dehydration can slow down metabolism and is often mistaken for hunger, leading to overeating. A common recommendation is to drink at least 2.5 to 3 liters of water per day, increasing this amount during intense exercise. Drinking a glass of water 30 minutes before meals can naturally reduce portion sizes and support digestion. Tracking water intake alongside calories gives a complete view of metabolic health.",
+    "tags": ["water", "hydration", "metabolism", "fat loss"]
+  },
+  {
+    "id": "kb_fiber_digestion",
+    "title": "The Power of Dietary Fiber",
+    "category": "Macros",
+    "content": "Dietary fiber is a type of carbohydrate that the body cannot digest. It is essential for gut health, regulating blood sugar levels, and promoting satiety. Soluble fiber binds with water to slow digestion, helping you feel full longer. Insoluble fiber adds bulk to stool and prevents constipation. Adults should aim for 25 to 35 grams of fiber daily. Good sources include oats, chia seeds, flaxseeds, beans, lentils, broccoli, berries, apples, and whole grains.",
+    "tags": ["fiber", "digestion", "satiety", "health"]
+  },
+  {
+    "id": "kb_healthy_swaps",
+    "title": "Smart Healthy Food Swaps",
+    "category": "Lifestyle",
+    "content": "Making sustainable adjustments to your diet is easier with food swaps. Swap sour cream for Greek yogurt to save calories and add protein. Swap white rice for cauliflower rice or quinoa for more fiber and fewer carbs. Use zucchini noodles (zoodles) or spaghetti squash instead of traditional pasta. Swap sugar-sweetened beverages with sparkling water or herbal teas. Instead of frying foods, try air-frying, baking, or grilling with olive or avocado oil spray to reduce added fats.",
+    "tags": ["swaps", "recipes", "diet", "healthy options"]
+  },
+  {
+    "id": "kb_weight_plateaus",
+    "title": "Overcoming Weight Loss Plateaus",
+    "category": "Weight Management",
+    "content": "Weight loss is rarely linear. A plateau is normal and occurs when the body adapts to a calorie deficit by slowing its metabolism (adaptive thermogenesis). To break a plateau, ensure tracking is accurate (measure/weigh food portion sizes rather than estimating). Increase physical activity, specifically non-exercise activity thermogenesis (NEAT) like daily steps. Incorporate resistance training to build metabolic muscle tissue, and prioritize 7-8 hours of sleep and stress management, as high cortisol increases water retention.",
+    "tags": ["plateau", "weight loss", "metabolism", "sleep", "stress"]
+  },
+  {
+    "id": "kb_energy_balance",
+    "title": "Energy Balance and Calorie Budgeting",
+    "category": "Macros",
+    "content": "Weight management is governed by energy balance: Calories In vs. Calories Out (CICO). To lose weight, you must sustain a moderate calorie deficit (typically 300 to 500 calories below your Total Daily Energy Expenditure, or TDEE). To gain muscle, you require a small calorie surplus paired with progressive resistance training. BMR (Basal Metabolic Rate) represents the calories burned just to keep the body alive. Adjust calorie goals dynamically as your weight change trends evolve.",
+    "tags": ["calories", "cico", "deficit", "surplus", "tdee", "bmr"]
+  },
+  {
+    "id": "kb_micronutrients",
+    "title": "Micronutrient Density for Immunity",
+    "category": "Macros",
+    "content": "While macronutrients (protein, carbs, fat) supply energy, micronutrients (vitamins and minerals) regulate body processes. Focus on eating a 'rainbow' of fruits and vegetables to secure a wide profile of antioxidants. Key minerals like potassium (found in bananas, potatoes, spinach) help regulate blood pressure and fluid balance. Magnesium (in leafy greens, nuts, dark chocolate) supports muscle function and sleep quality. Iron (in spinach, red meat, lentils) is vital for oxygen transport in blood.",
+    "tags": ["vitamins", "minerals", "micronutrients", "immunity"]
+  }
+]

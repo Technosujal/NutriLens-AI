@@ -57,6 +57,8 @@ def get_nutrients_from_usda_item(food_item: dict) -> Dict[str, float]:
             
     return nutrients
 
+NON_FOOD_QUERIES = {"hi", "hello", "hey", "test", "testing", "ok", "yes", "no", "food", "eat", "meal", "breakfast", "lunch", "dinner", "snack"}
+
 async def search_usda_food(query: str) -> Optional[Dict[str, float]]:
     """
     Searches the USDA FoodData Central API for a food item query and returns
@@ -65,11 +67,15 @@ async def search_usda_food(query: str) -> Optional[Dict[str, float]]:
     if not settings.USDA_API_KEY:
         logger.warning("USDA_API_KEY is not set. Skipping USDA API lookup.")
         return None
+
+    clean_query = query.strip().lower().rstrip(".!?,")
+    if len(clean_query) < 3 or clean_query in NON_FOOD_QUERIES:
+        return None
         
     url = f"{USDA_BASE_URL}/foods/search"
     params = {
         "api_key": settings.USDA_API_KEY,
-        "query": query,
+        "query": clean_query,
         "pageSize": 1
     }
     
