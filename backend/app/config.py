@@ -1,4 +1,5 @@
 import os
+from typing import List
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 
@@ -16,14 +17,16 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
     USDA_API_KEY: str = os.getenv("USDA_API_KEY", "")
     
-    # CORS Origins (comma-separated string or list)
-    cors_origins_raw = os.getenv("CORS_ORIGINS", "*")
-    if cors_origins_raw == "*":
-        CORS_ORIGINS: list[str] = ["*"]
-    else:
-        CORS_ORIGINS: list[str] = [origin.strip() for origin in cors_origins_raw.split(",") if origin.strip()]
+    # CORS Origins
+    CORS_ORIGINS: List[str] = ["*"]
 
     class Config:
         case_sensitive = True
+        extra = "ignore"
 
 settings = Settings()
+
+_cors_env = os.getenv("CORS_ORIGINS", "*")
+if _cors_env and _cors_env != "*":
+    settings.CORS_ORIGINS = [origin.strip() for origin in _cors_env.split(",") if origin.strip()]
+
